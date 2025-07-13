@@ -6,6 +6,7 @@ app = Flask(__name__)
 
 # 🔑 Replace with your OpenAI key
 openai.api_key = os.environ.get("OPENAI_API_KEY")
+print("Loaded API Key:", openai.api_key)
 
 @app.route("/generate", methods=["POST"])
 def generate_campaign():
@@ -43,14 +44,18 @@ Audience: {audience}
 Tone or Style: {tone}
 """
 
+    try:
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.9
     )
-
     idea = response['choices'][0]['message']['content']
     return jsonify({"campaign": idea})
+except Exception as e:
+    print("🔥 Error during OpenAI call:", str(e))
+    return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
