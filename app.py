@@ -1,3 +1,8 @@
+import openai
+from flask import Flask, request, jsonify
+
+openai.api_key = "your-api-key"  # Make sure this is set properly
+
 @app.route("/generate", methods=["POST"])
 def generate_campaign():
     data = request.json
@@ -30,14 +35,14 @@ Tone or Style: {tone}
 """
 
     try:
-        client = OpenAI()
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.9
         )
-        idea = response.choices[0].message.content
+        idea = response.choices[0].message["content"]
         return jsonify({"campaign": idea})
-except Exception as e:
-    print("🔥 Error during OpenAI call:", str(e))
-    return jsonify({"error": str(e)}), 500
+
+    except Exception as e:
+        print("🔥 Error during OpenAI call:", str(e))
+        return jsonify({"error": str(e)}), 500
