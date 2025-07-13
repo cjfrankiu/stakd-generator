@@ -45,17 +45,16 @@ Tone or Style: {tone}
 """
 
     try:
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.9
-    )
-    idea = response['choices'][0]['message']['content']
-    return jsonify({"campaign": idea})
-except Exception as e:
-    print("🔥 Error during OpenAI call:", str(e))
-    return jsonify({"error": str(e)}), 500
-
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.9
+        )
+        idea = response['choices'][0]['message']['content']
+        return jsonify({"campaign": idea})
+    except Exception as e:
+        print("🔥 Error during OpenAI call:", str(e))
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
