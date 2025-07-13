@@ -30,14 +30,14 @@ Tone or Style: {tone}
 """
 
     try:
-    client = OpenAI()
-    response = client.chat.completions.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.9
-    )
-    idea = response.choices[0].message.content
-    return jsonify({"campaign": idea})
+        client = OpenAI()
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.9
+        )
+        idea = response.choices[0].message.content
+        return jsonify({"campaign": idea})
 except Exception as e:
     print("🔥 Error during OpenAI call:", str(e))
     return jsonify({"error": str(e)}), 500
